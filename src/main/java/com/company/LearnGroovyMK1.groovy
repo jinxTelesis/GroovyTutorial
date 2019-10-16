@@ -1,5 +1,8 @@
 package com.company
 
+import groovy.transform.TypeChecked
+import groovy.transform.CompileStatic
+
 class LearnGroovyMK1 {
 
     static void main(String... args) {
@@ -140,6 +143,133 @@ class LearnGroovyMK1 {
         }
         assert x.equals("Roberto Grails Groovy")
 
+        technologies = ['Groovy','grails','Gradle']
+
+        technologies*.toUpperCase() // Spread operator:
+
+
+        //def user = User.get(1) //nullsafe
+        // def usernaem = user?.username //nullsafe
+
+        /*
+            Closures
+            A Groovy Closure is like a "code block " or a method pointer. It is a peice of code that is defined and executed at a later point
+
+
+         */
+
+        def clos = {println "Hello World!"}
+
+        println "Executing the Closure:"
+
+        clos() // calling
+
+        def sum = {a1, b1 -> println a1 + b1}
+
+        sum(2,4)
+
+        // Closures may refer to variables not listed in their parameter list.
+
+        def x3 = 5
+        def multiplyBy = {num -> num * x}
+        println multiplyBy(10)
+
+        def clos2 = {print it }
+        clos2("hi")
+
+        /*
+        Groovy can memoize closure results [1][2][3]
+         */
+
+        def cl = {a3, b3 -> sleep(3000) a3 + b3}
+
+        def mem = cl.memoize() // that is sick
+
+        // not supported yet?
+//        def callClosure(a4,b4){
+//            def start = System.currentTimeMillis()
+//            mem(a4,b4)
+//            println( "")
+//        }
+
+        // Expando
+
+        def user = new Expando(name:"Roberto")
+        assert 'Roberto' == user.name
+
+        user.lastName = 'Perez'
+        assert 'Perez' == user.lastName
+
+        user.showInfo = {
+            out ->
+                out << "Name: $name"
+                out << ", Last name: $lastName"
+        }
+
+        def sw = new StringWriter()
+        println user.showInfo(sw)
+
+        /*
+        Metaprogramming (MOP)
+         */
+
+        //Using ExpandoMetaClass to add behaviour
+
+        String.metaClass.testAdd = {
+            println 'we added this'
+        }
+
+        String x5 = "test"
+        x5?.testAdd()
+
+        //Intercepting method calls
+
+        def test = new Test()
+
+        test?.sum(2,3)
+        test?.multiply(2,3)
+
+        def fooPattern = /.*foo.*/ // example of a slashy string
+        assert fooPattern == '.*foo.*'
+
+        def escapeSlash = /The character \/ is a forward slash/
+        assert escapeSlash == 'The character / is a forward slash'
+
+        def multilineSlashy = /one
+        two
+        three/
+
+        assert multilineSlashy.contains('\n')
+
+        def color = 'blue'
+
+        def interpolatedSlashy = /a $color car/
+
+        assert interpolatedSlashy == 'a blue car'
+
+        // cant have empty string as a slashy
+
+        // $ escape of a slashy
+
+        char c1 ='A'
+        assert c1 instanceof Character
+
+        def c2 = 'B' as char
+        assert  c2 instanceof Character
+
+        def c3 = (char)'C'
+        assert  c3 instanceof Character
+
+        
+
+
+
+
+
+
+
+
+
 
 
 
@@ -159,4 +289,13 @@ class LearnGroovyMK1 {
 
 
     }
+
+    static class Test implements GroovyInterceptable{
+        def sum(Integer x, Integer y){x + y}
+
+        def invokeMethod(String name, args){
+            System.out.println "Invoke method $name with args: $args"
+        }
+    }
+
 }

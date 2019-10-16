@@ -18,9 +18,10 @@ class Foo {
 
     // It can be called in 3 different ways
 
+    def say(msg = 'Hello', name = 'world'){
+        "$msg $name!"
+    }
 
 }
 
-def say(msg = 'Hello', name = 'world'){
-    "$msg $name!"
-}
+
