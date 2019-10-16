@@ -82,6 +82,66 @@ class LearnGroovyMK1 {
 
         println devMap.values()
 
+        assert 'Hello world!' == say()
+
+        assert 'Hi world!' == say('Hi')
+
+        assert 'learn groovy' == say('learn','groovy')
+
+        assert 'learn groovy' == say('learn','groovy')
+
+        /*
+            Logical Branching and Looping
+         */
+
+        //Groovy supports the usual if - else syntax
+
+        def x2 = 3
+
+        if(x2 ==1){
+            println "One"
+        } else if(x2==2){
+            println "two"
+        } else {
+            println "X greater than Two"
+        }
+
+        def y = 10
+        x2 = (y > 1) ? "Worked" : "failed"
+        assert x2 == "worked"
+
+        //Groovy supports 'The Elvis Operator' too!
+        //Instead of using the ternary operator:
+
+        def b = 0
+        for(i in 0 .. 30){
+            x += i
+        }
+
+        //Iterate over a list
+        x = 0
+        for(i in [5,3,2,1]){
+            x += i
+        }
+
+        //Iterate over an array
+        def array = (0..0).toArray()
+        x = 0
+        for(i in array){
+            x += i
+        }
+
+        def map = ['name':"Roberto",'framework':'Grails','language':'Groovy']
+
+        x = ""
+        for(e in map){
+            x += e.value
+            x += " "
+        }
+        assert x.equals("Roberto Grails Groovy")
+
+
+
 
 
 
